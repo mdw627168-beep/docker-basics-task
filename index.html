@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Docker Deployment Dashboard</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Segoe UI, Arial, sans-serif;
+    }
+
+    body{
+      height:100vh;
+      background:#0d1117;
+      color:#e6edf3;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .wrapper{
+      width:900px;
+      background:#161b22;
+      border-radius:14px;
+      padding:40px;
+      box-shadow:0 25px 80px rgba(0,0,0,0.7);
+    }
+
+    /* ===== Header ===== */
+    .header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:30px;
+    }
+
+    .title{
+      font-size:24px;
+      font-weight:600;
+    }
+
+    .badges span{
+      background:#238636;
+      padding:6px 12px;
+      border-radius:20px;
+      font-size:12px;
+      margin-left:8px;
+    }
+
+    .clock{
+      font-size:13px;
+      color:#8b949e;
+    }
+
+    /* ===== Status bar ===== */
+    .status{
+      background:#0d1117;
+      padding:14px 18px;
+      border-radius:10px;
+      margin-bottom:30px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:600;
+      color:#3fb950;
+    }
+
+    .dot{
+      width:10px;
+      height:10px;
+      background:#3fb950;
+      border-radius:50%;
+      animation:pulse 1s infinite;
+    }
+
+    @keyframes pulse{
+      0%{opacity:1}
+      50%{opacity:0.3}
+      100%{opacity:1}
+    }
+
+    /* ===== Info grid ===== */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:20px;
+      margin-bottom:30px;
+    }
+
+    .card{
+      background:#0d1117;
+      padding:18px;
+      border-radius:10px;
+    }
+
+    .label{
+      font-size:12px;
+      color:#8b949e;
+      margin-bottom:6px;
+    }
+
+    .value{
+      font-size:15px;
+      font-weight:600;
+    }
+
+    /* ===== Metrics ===== */
+    .metric{
+      margin-top:8px;
+    }
+
+    .bar{
+      height:7px;
+      background:#30363d;
+      border-radius:10px;
+      overflow:hidden;
+      margin-top:5px;
+    }
+
+    .fill{
+      height:100%;
+      background:#3fb950;
+      width:40%;
+      transition:0.3s;
+    }
+
+    /* ===== Footer ===== */
+    .footer{
+      text-align:center;
+      font-size:12px;
+      color:#6e7681;
+      margin-top:20px;
+    }
+  </style>
+</head>
+
+
+<body>
+
+<div class="wrapper">
+
+  <div class="header">
+    <div class="title">
+      🐳 Docker Deployment Dashboard
+      <span class="badges">
+        <span>CI/CD ACTIVE</span>
+      </span>
+    </div>
+    <div class="clock" id="clock"></div>
+  </div>
+
+
+  <div class="status">
+    <div class="dot"></div>
+    All Services Running Smoothly
+  </div>
+
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="label">Container Name</div>
+      <div class="value">task3-container</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Image</div>
+      <div class="value">task3-app:latest</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Container ID</div>
+      <div class="value" id="cid"></div>
+    </div>
+
+    <div class="card">
+      <div class="label">Port Mapping</div>
+      <div class="value">8081 → 80</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Uptime</div>
+      <div class="value" id="uptime"></div>
+    </div>
+
+    <div class="card">
+      <div class="label">CPU Usage</div>
+      <div class="metric">
+        <div class="bar"><div class="fill" id="cpu"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Memory Usage</div>
+      <div class="metric">
+        <div class="bar"><div class="fill" id="mem"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Server Stack</div>
+      <div class="value">Docker + Nginx</div>
+    </div>
+
+  </div>
+
+
+  <div class="footer">
+    Built & Deployed by Md Waseem • DevOps Engineering
+  </div>
+
+</div>
+
+
+<script>
+  // clock
+  setInterval(()=>{
+    document.getElementById("clock").innerHTML =
+      new Date().toLocaleDateString()+" | "+new Date().toLocaleTimeString();
+  },1000);
+
+  // fake container id
+  document.getElementById("cid").innerHTML =
+    Math.random().toString(16).substring(2,14);
+
+  // uptime counter
+  let sec=0;
+  setInterval(()=>{
+    sec++;
+    let h=Math.floor(sec/3600);
+    let m=Math.floor((sec%3600)/60);
+    let s=sec%60;
+    document.getElementById("uptime").innerHTML = h+"h "+m+"m "+s+"s";
+  },1000);
+
+  // fake metrics animation
+  setInterval(()=>{
+    document.getElementById("cpu").style.width = (20+Math.random()*50)+"%";
+    document.getElementById("mem").style.width = (30+Math.random()*40)+"%";
+  },1200);
+</script>
+
+</body>
+</html>
